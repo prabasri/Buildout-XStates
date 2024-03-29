@@ -1,0 +1,14 @@
+.dropdown {
+  margin: 20px;
+  padding: 10px;
+}
+
+.cityText {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.fadedText {
+  font-weight: 700;
+  color: gray;
+}
