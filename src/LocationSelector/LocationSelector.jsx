@@ -40,7 +40,7 @@ export const LocationSelector = () => {
       setCities(data);
 
     } catch(error) {
-      console.error("Error:", error)
+      console.error(error);
     }
   }
 
@@ -55,17 +55,17 @@ export const LocationSelector = () => {
   }, [selectedCountry]);
 
   useEffect(() => {
-    if(selectedState && selectedCountry) {
-      getCities();
+    if(selectedCountry && selectedState) {
+        getCities();
     }
-  }, [selectedState, selectedCountry]);
+  }, [selectedCountry, selectedState]);
 
-  // console.log(countries);
-  // console.log(states);
-  // console.log(cities);
-  // console.log(selectedCountry);
-  // console.log(selectedState);
-  // console.log(selectedCity);
+  console.log(countries);
+  console.log(states);
+  console.log(cities);
+  console.log(selectedCountry);
+  console.log(selectedState);
+  console.log(selectedCity);
 
   
   return (
@@ -74,7 +74,11 @@ export const LocationSelector = () => {
       <select 
         value={selectedCountry} 
         className={styles.dropdown} 
-        onChange={e => setSelectedCountry(e.target.value)}
+        onChange={e => {
+          setSelectedCountry(e.target.value); // we can use the setter functions like this also inside same event handler
+          setSelectedState(""); // If we don't do like this, the getCities() API will be called for mismatching country and state.
+          setSelectedCity("");  // When we are changing the country, there will be a mismatch and error in fetching API.
+        }}
       >
         <option value="">Select Country</option>
 
@@ -94,7 +98,7 @@ export const LocationSelector = () => {
       >
         <option value="">Select State</option>
 
-        {states.map((state) => {
+        {selectedCountry && states.map((state) => {
           return (
             <option key={state} value={state}>{state}</option>
           );
@@ -110,7 +114,7 @@ export const LocationSelector = () => {
       >
         <option value="">Select City</option>
 
-        {cities.map((city) => {
+        {(selectedCountry && selectedState) && cities.map((city) => {
           return (
             <option key={city} value={city}>{city}</option>
           );
@@ -120,7 +124,7 @@ export const LocationSelector = () => {
       {
       selectedCity && 
         <h3>You selected 
-          <span className={styles.cityText}>{" "}{selectedCity}{", "}</span>
+          <span className={styles.cityText}> {selectedCity}, </span>
           <span className={styles.fadedText}>{selectedState}, {selectedCountry}</span>
         </h3> 
       }
